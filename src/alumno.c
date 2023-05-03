@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
 
 /**
  ** \author Balthazar Martin
- ** \date 17/04/23
+ ** \date ??/04/23
  ** \brief Implementacion del modulo de alumnos
  **
  ** \addtogroup Alumno Alumnos.c
@@ -32,10 +32,25 @@ SPDX-License-Identifier: MIT
 
 #include "alumno.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 
 /* === Macros definitions ====================================================================== */
 
+#if ( !defined( DINAMICO) && !defined (ESTATICO ) )
+//! Si no se define el modo Estatico entonces se almacenara los datos del alumno de forma Dinamica
+#define DINAMICO
+#endif
+
 /* === Private data type declarations ========================================================== */
+//! Estructura SOLO para almacenar datos del alumno
+struct alumno_s {
+    char apellido[FIELD_SIZE]; //!< Almacena el apellido del alumno
+    char nombre[FIELD_SIZE];   //!< Almacena el nombre del alumno
+    uint32_t documento;        //!< Almacena el documento del alumno
+    bool ocupado;              //!< Booleano que indica si la estructura esta vacia o no
+};
 
 /* === Private variable declarations =========================================================== */
 
@@ -55,6 +70,9 @@ SerializarNumero(const char * campo, //!< Puntero que permitira mostrar en panta
                  char * cadena, //!< Puntero a la cadena de resultado
                  int espacio /*!< Maximo espacio que puede ocupar la cadena */);
 
+//! Funcion para almacenar de forma Estatica los datos del alumno
+static alumno_t Alocar(alumno_t resultado);
+
 /* === Public variable definitions ============================================================= */
 
 /* === Private variable definitions ============================================================ */
@@ -69,7 +87,51 @@ static int SerializarNumero(const char * campo, int valor, char * cadena, int es
     return snprintf(cadena, espacio, "\"%s\":\"%d\",", campo, valor);
 }
 
+static alumno_t Alocar(alumno_t resultado){
+    static struct alumno_s instancias[NUMBER_OF_STRUCTS] = {0};
+    for (int i = 0; i < NUMBER_OF_STRUCTS; i++) {
+        if (!instancias[i].ocupado) {
+            printf("Modo: Estatico. \n");
+            instancias[i].ocupado=true; 
+            resultado = &instancias[i];
+            resultado->ocupado = true;
+	        break;
+	    }else {
+        printf("Instancia %d ocupada.\n", i);
+	    }
+    }
+}
+
 /* === Public function implementation ========================================================== */
+
+alumno_t CrearAlumno(char * apellido, char * nombre, int documento) {
+    alumno_t resultado;
+    #if (ESTATICO) 
+    resultado=Alocar(resultado);
+    #else
+    printf("Modo: Dinamico. \n");
+    resultado = malloc(sizeof(struct alumno_s)); 
+    #endif
+    GetApellido(resultado, apellido);
+    GetNombre(resultado, nombre);
+    GetDocumento(resultado, documento);
+    return resultado;
+}
+
+int * GetApellido(alumno_t alumno, char cadena[]) {
+    strcpy(alumno->apellido, cadena);
+    return NULL;
+}
+
+int * GetNombre(alumno_t alumno, char cadena[]) {
+    strcpy(alumno->nombre, cadena);
+    return NULL;
+}
+
+int * GetDocumento(alumno_t alumno, int documento) {
+    alumno->documento = documento;
+    return NULL;
+}
 
 int Serializar(alumno_t alumno, char cadena[], uint32_t espacio) {
     int disponibles = espacio;

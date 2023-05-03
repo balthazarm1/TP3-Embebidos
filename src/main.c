@@ -21,11 +21,11 @@ SPDX-License-Identifier: MIT
 
 /**
  ** \author Balthazar Martin
- ** \date 17/04/23
- ** \brief Declaraciones publicas del modulo de alumnos
+ ** \date ??/04/23
+ ** \brief Implementacion publica para crear Alumnos
  **
- ** \addtogroup tp2 TP2-main.c
- ** \brief Segundo Trabajo Practico
+ ** \addtogroup tp3 TP3-main.c
+ ** \brief Tercer Trabajo Practico
  ** @{ */
 
 /* === Headers files inclusions =============================================================== */
@@ -49,17 +49,13 @@ SPDX-License-Identifier: MIT
 
 /* === Public function implementation ========================================================== */
 
+//! Funcion Principal que crea el alumno y lo serializa
 int main(void) {
 
-    static const struct alumno_s yo = {
-        .apellido = "Martin",
-        .nombre = "Balthazar",
-        .documento = 43360559,
-    };
-
     char cadena[128];
+    alumno_t yo = CrearAlumno("Martin", "Balthazar", 43360559); // objeto yo
 
-    if (Serializar(&yo, cadena, sizeof(cadena)) >= 0) {
+    if (Serializar(yo, cadena, sizeof(cadena)) >= 0) {
         printf("%s\n", cadena);
     } else {
         printf("Error al serializar\n");

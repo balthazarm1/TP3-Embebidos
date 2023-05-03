@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
 
 /**
  ** \author Balthazar Martin
- ** \date 17/04/23
+ ** \date ??/04/23
  ** \brief Declaraciones publicas del modulo de alumnos
  **
  ** \addtogroup alumno Alumnos.h
@@ -51,18 +51,39 @@ extern "C" {
  */
 #define FIELD_SIZE 50
 
+/**
+ * @brief Define el numero de estructuras de alumnos a generar
+ *
+ * Este parametro define el numero de estructuras
+ * del tipo \ref alumno_s "alumno_s"
+ */
+#define NUMBER_OF_STRUCTS 50
+
 /* === Public data type declarations =========================================================== */
 
-//! Estructura para almacenar datos del alumno
-typedef struct alumno_s {
-    char apellido[FIELD_SIZE]; //!< Almacena el apellido del alumno
-    char nombre[FIELD_SIZE];   //!< Almacena el nombre del alumno
-    uint32_t documento;        //!< Almacena el documento del alumno
-} const * alumno_t;
+//! Estructura anonima para almacenar datos del alumno con campos desconocidos
+typedef struct alumno_s * alumno_t;
 
 /* === Public variable declarations ============================================================ */
 
 /* === Public function declarations ============================================================ */
+
+//! Funcion que recibe los campos del alumno
+alumno_t CrearAlumno(char * apellido, //!< Puntero que recibe el apellido del alumno
+                     char * nombre,   //!< Puntero que recibe el nombre del alumno
+                     int documento /*!< Entero que recibe el documento del alumno */);
+
+//! Funcion para obtener el apellido del alumno
+int * GetApellido(alumno_t alumno, //!< Puntero a la estructura de datos del alumno
+                char cadena[] /*!< Puntero a la cadena del apellido del alumno */ );
+
+//! Funcion para obtener el nombre del alumno
+int * GetNombre(alumno_t alumno, //!< Puntero a la estructura de datos del alumno
+                char cadena[] /*!< Puntero a la cadena del nombre del alumno */ );
+
+//! Funcion para obtener el documento del alumno
+int * GetDocumento(alumno_t alumno, //!< Puntero a la estructura de datos del alumno
+                int documento /*!< Documento del alumno */ );
 
 //! Funcion para serializar los datos del alumno
 int Serializar(alumno_t alumno, //!< Puntero a la estructura de datos del alumno
