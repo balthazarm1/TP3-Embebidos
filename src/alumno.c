@@ -40,7 +40,7 @@ SPDX-License-Identifier: MIT
 
 #if ( !defined( DINAMICO) && !defined (ESTATICO ) )
 //! Si no se define el modo Estatico entonces se almacenara los datos del alumno de forma Dinamica
-#define DINAMICO
+#define ESTATICO 0
 #endif
 
 /* === Private data type declarations ========================================================== */
@@ -106,7 +106,7 @@ static alumno_t Alocar(alumno_t resultado){
 
 alumno_t CrearAlumno(char * apellido, char * nombre, int documento) {
     alumno_t resultado;
-    #if (ESTATICO) 
+    #if ESTATICO == 1
     resultado=Alocar(resultado);
     #else
     printf("Modo: Dinamico. \n");

@@ -23,7 +23,7 @@ $(DOC_DIR) : $(OUT_DIR)
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(OBJ_DIR)  
-	gcc -c $< -o $@ -DESTATICO
+	gcc -c $< -o $@ 
 
 all: $(OBJ_FILES) $(BIN_DIR)
 	gcc -o $(BIN_DIR)/app.elf $(OBJ_FILES)
