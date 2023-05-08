@@ -100,6 +100,7 @@ static alumno_t Alocar(alumno_t resultado){
         printf("Instancia %d ocupada.\n", i);
 	    }
     }
+    return resultado;
 }
 
 /* === Public function implementation ========================================================== */
